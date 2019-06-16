@@ -2833,7 +2833,12 @@ static string _player_spell_stats(const spell_type spell)
         return description; // all other info is player-dependent
     }
 
-    const string failure = failure_rate_to_string(raw_spell_fail(spell));
+
+    string failure;
+    if (you.divine_knowledge)
+        failure = "0%";
+    else
+        failure = failure_rate_to_string(raw_spell_fail(spell));
     description += make_stringf("        Fail: %s", failure.c_str());
 
     description += "\n\nPower : ";
@@ -3197,7 +3202,7 @@ void describe_spell(spell_type spell, const monster_info *mon_owner,
             return false;
         lastch = ev.key.keysym.sym;
         done = (toupper(lastch) == 'M' && can_mem || lastch == CK_ESCAPE
-            || lastch == CK_ENTER || lastch == ' ');
+                || lastch == CK_ENTER || lastch == ' ');
         return done;
     });
 
